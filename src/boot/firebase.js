@@ -25,9 +25,9 @@ const auth = firebase.auth();
 
 var museums = db.collectionGroup('projects').where('projCreator', '==', 'kk@live.dkk');
 museums.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
-    });
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+  });
 });
 
 export {
@@ -44,6 +44,24 @@ firebase.getCurrentUser = () => {
     }, reject);
   })
 };
+
+//Sætter en session for useren
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .then(() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    var errorCode = error.code;
+    console.log(errorCode)
+    var errorMessage = error.message;
+    console.log(errorMessage)
+  });
+
 
 /* var cake = db.collectionGroup('projects').where('name', '==', "WOHOOOOOOOOO");
 cake.get().then((querySnapshot) => {
@@ -175,5 +193,3 @@ museums.get().then((querySnapshot) => {
         console.log(doc.id, ' => ', doc.data());
     });
 }); */
-
-
